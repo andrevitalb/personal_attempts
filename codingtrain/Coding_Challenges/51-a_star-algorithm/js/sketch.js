@@ -17,9 +17,9 @@ function heuristic(first, last){
 	return d;
 }
 
-var cols = 50;
-var rows = 50;
-var grid = new Array(cols);
+var cols;
+var rows;
+var grid;
 
 var openSet = [];
 var closedSet = [];
@@ -30,16 +30,40 @@ var end;
 var w, h;
 var path = [];
 
-function setup(){
-	createCanvas(600, 600);
+var found = false;
+
+function setup(){}
+
+function setGrid(col, row){
+	var ratio;
+	var canvasWidth;
+	var canvasHeight;
+	found = false;
+
+	cols = col;
+	rows = row;
+
+	grid = new Array(cols);
+
+	ratio = cols / rows;
+
+	if(ratio > 1.7){
+		canvasWidth = 1000;
+		canvasHeight = canvasWidth / ratio;
+	}
+	else {
+		canvasHeight = 600;
+		canvasWidth = canvasHeight * ratio;
+	}
+
+	var canvas = createCanvas(canvasWidth, canvasHeight);
+	canvas.parent('canvas_holder');
 
 	w = width / cols;
 	h = height / rows;
 
 	for(let i = 0; i < cols; i++) grid[i] = new Array(rows);	
-}
 
-function setGrid(){
 	for(let i = 0; i < cols; i++){
 		for(let j = 0; j < rows; j++){
 			grid[i][j] = new Spot(i, j);
@@ -58,6 +82,29 @@ function setGrid(){
 	end.wall = false;
 
 	openSet.push(start);
+
+	loop();
+}
+
+function restartGrid(){
+	for(let i = 0; i < cols; i++) for(let j = 0; j < rows; j++) grid[i][j].show(color(33));
+	cols = 0;
+	rows = 0;
+	grid = 0;
+
+	openSet = [];
+	closedSet = [];
+
+	start = 0;
+	end = 0;
+
+	w = 0;
+	h = 0;
+	path = [];
+
+	found = false;
+
+	clear();
 }
 
 function draw(){
@@ -71,7 +118,7 @@ function draw(){
 
 			if(current === end) {
 				noLoop();
-				alert("Punto encontrado");
+				found = true;
 			}
 
 			removeFromArray(openSet, current);
@@ -108,7 +155,7 @@ function draw(){
 			}
 
 		} else {
-			alert("No solution");
+			alert("No hay solución");
 			noLoop();
 			return;
 		}
@@ -136,5 +183,7 @@ function draw(){
 		beginShape();
 		for(let i = 0; i < path.length; i++) vertex(path[i].x * w + w / 2, path[i].y * h + h / 2);
 		endShape();
+
+		if(found) alert("Punto encontrado");
 	}
 }
