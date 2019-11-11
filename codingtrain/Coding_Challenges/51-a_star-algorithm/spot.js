@@ -11,7 +11,7 @@ function Spot(x, y){
 
 	this.wall = false;
 
-	if(random(1) < .4) this.wall = true;
+	if(random(1) < errorAppear) this.wall = true;
 
 	this.show = function(col) {
 		if(this.wall) {
@@ -36,9 +36,11 @@ function Spot(x, y){
 		if(y > 0) this.neighbors.push(grid[x][y - 1]);
 
 		// Diagonals
-		if(x > 0 && y > 0) this.neighbors.push(grid[x - 1][y - 1]);
-		if(x < cols - 1 && y > 0) this.neighbors.push(grid[x + 1][y - 1]);
-		if(x < cols - 1 && y < rows - 1) this.neighbors.push(grid[x + 1][y + 1]);
-		if(x > 0 && y < rows - 1) this.neighbors.push(grid[x - 1][y + 1]);
+		if(enableDiag){
+			if(x > 0 && y > 0) this.neighbors.push(grid[x - 1][y - 1]);
+			if(x < cols - 1 && y > 0) this.neighbors.push(grid[x + 1][y - 1]);
+			if(x < cols - 1 && y < rows - 1) this.neighbors.push(grid[x + 1][y + 1]);
+			if(x > 0 && y < rows - 1) this.neighbors.push(grid[x - 1][y + 1]);
+		}
 	}
 }

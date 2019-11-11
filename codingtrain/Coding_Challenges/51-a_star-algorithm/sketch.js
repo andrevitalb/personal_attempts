@@ -36,8 +36,10 @@ function setup(){
 	w = width / cols;
 	h = height / rows;
 
-	for(let i = 0; i < cols; i++) grid[i] = new Array(rows);
+	for(let i = 0; i < cols; i++) grid[i] = new Array(rows);	
+}
 
+function setGrid(){
 	for(let i = 0; i < cols; i++){
 		for(let j = 0; j < rows; j++){
 			grid[i][j] = new Spot(i, j);
@@ -59,78 +61,80 @@ function setup(){
 }
 
 function draw(){
-	if(openSet.length > 0){
-		var firstPlace = 0;
+	if(startDraw){
+		if(openSet.length > 0){
+			var firstPlace = 0;
 
-		for(let i = 0; i < openSet.length; i++) if(openSet[i].f < openSet[firstPlace].f) firstPlace = i;
+			for(let i = 0; i < openSet.length; i++) if(openSet[i].f < openSet[firstPlace].f) firstPlace = i;
 
-		var current = openSet[firstPlace];
+			var current = openSet[firstPlace];
 
-		if(current === end) {
-			noLoop();
-			console.log("Punto encontrado");
-		}
+			if(current === end) {
+				noLoop();
+				alert("Punto encontrado");
+			}
 
-		removeFromArray(openSet, current);
-		closedSet.push(current);
+			removeFromArray(openSet, current);
+			closedSet.push(current);
 
-		var neighbors = current.neighbors;
+			var neighbors = current.neighbors;
 
-		for(let i = 0 ; i < neighbors.length; i++){
-			var neighbor = neighbors[i];
+			for(let i = 0 ; i < neighbors.length; i++){
+				var neighbor = neighbors[i];
 
-			if(!closedSet.includes(neighbor) && !neighbor.wall){
-				var tempG = current.g + 1;
-				var newPath = false;
+				if(!closedSet.includes(neighbor) && !neighbor.wall){
+					var tempG = current.g + 1;
+					var newPath = false;
 
-				if(openSet.includes(neighbor)){
-					if(neighbor.g > tempG) {
+					if(openSet.includes(neighbor)){
+						if(neighbor.g > tempG) {
+							neighbor.g = tempG;
+							newPath = true;
+						}
+					} else {
 						neighbor.g = tempG;
 						newPath = true;
+						openSet.push(neighbor);
 					}
-				} else {
-					neighbor.g = tempG;
-					newPath = true;
-					openSet.push(neighbor);
-				}
 
-				if(newPath) {
-					neighbor.h = heuristic(neighbor, end);
-					neighbor.f = neighbor.g + neighbor.h;
+					if(newPath) {
+						neighbor.h = heuristic(neighbor, end);
+						neighbor.f = neighbor.g + neighbor.h;
 
-					neighbor.prev = current;
+						neighbor.prev = current;
+					}
 				}
+				neighbor.g = current.g + 1;
 			}
-			neighbor.g = current.g + 1;
+
+		} else {
+			alert("No solution");
+			noLoop();
+			return;
 		}
 
-	} else {
-		console.log("No solution");
-		noLoop();
-		return;
+		background(33);
+
+		for(let i = 0; i < cols; i++) for(let j = 0; j < rows; j++) grid[i][j].show(color(33));
+
+		for(let i = 0; i < closedSet.length; i++) closedSet[i].show(color(144, 23, 23, 50));
+		for(let i = 0; i < openSet.length; i++) openSet[i].show(color(142, 183, 200, 75));
+
+		path = [];
+		var temp = current;
+		path.push(temp);
+
+		while(temp.prev){
+			path.push(temp.prev);
+			temp = temp.prev;
+		}
+
+		noFill();
+		stroke(23, 108, 144);
+		strokeWeight(w / 2);
+
+		beginShape();
+		for(let i = 0; i < path.length; i++) vertex(path[i].x * w + w / 2, path[i].y * h + h / 2);
+		endShape();
 	}
-
-	background(33);
-
-	for(let i = 0; i < cols; i++) for(let j = 0; j < rows; j++) grid[i][j].show(color(33));
-
-	for(let i = 0; i < closedSet.length; i++) closedSet[i].show(color(144, 23, 23, 50));
-	for(let i = 0; i < openSet.length; i++) openSet[i].show(color(142, 183, 200, 75));
-
-	path = [];
-	var temp = current;
-	path.push(temp);
-
-	while(temp.prev){
-		path.push(temp.prev);
-		temp = temp.prev;
-	}
-
-	noFill();
-	stroke(23, 108, 144);
-	strokeWeight(w / 2);
-
-	beginShape();
-	for(let i = 0; i < path.length; i++) vertex(path[i].x * w + w / 2, path[i].y * h + h / 2);
-	endShape();
 }

@@ -12,6 +12,8 @@
 	<script src="spot.js"></script>
 	<link rel="icon" href="img/favicon.ico">
 
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700&display=swap" rel="stylesheet">
 
 	<style>
@@ -41,6 +43,29 @@
 			line-height: 45px;
 		}
 
+		form { margin: 10px; }
+
+		label {
+			color: #fff;
+			margin: 0 15px;
+		}
+
+		input {
+			border-radius: 15px;
+			padding: 5px;
+			border: none;
+		}
+
+		button {
+			border-radius: 10px;
+			background-color: #000;
+			color: #fff;
+			border: none;
+			border: 1.5px solid #ccc;
+			padding: 5px;
+			margin: 0 8px;
+		}
+
 		canvas {
 			position: absolute;
 			top: 50%;
@@ -51,5 +76,34 @@
 </head>
 <body>
 	<h1>Algoritmo A*</h1>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-12">
+				<form>
+					<label for="obstaclePercentage">Porcentaje de aparición de obstáculos: </label>
+					<input type="number" id = "obstaclePercentage" name = "obstaclePercentage">
+
+					<label for="enableDiag">Uso de diagonales: </label>
+					<input type="checkbox" id = "enableDiag" name = "enableDiag">
+
+					<button type = "button" id = "startAStar" name = "startAStar">Iniciar</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script>
+		var startDraw = false;
+		var errorAppear = 0;
+		var enableDiag = false;
+
+		$('#startAStar').click(function(){
+			startDraw = true;
+			errorAppear = $('#obstaclePercentage').val() / 100;
+			enableDiag = $('#enableDiag').is(":checked");
+			setGrid();
+		});
+	</script>
 </body>
 </html>
