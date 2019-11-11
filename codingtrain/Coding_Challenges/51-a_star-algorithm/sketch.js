@@ -112,19 +112,10 @@ function draw(){
 
 	background(33);
 
-	for(let i = 0; i < cols; i++){
-		for(let j = 0; j < rows; j++){
-			grid[i][j].show(color(33));
-		}
-	}
+	for(let i = 0; i < cols; i++) for(let j = 0; j < rows; j++) grid[i][j].show(color(33));
 
-	for(let i = 0; i < closedSet.length; i++){
-		closedSet[i].show(color(144, 23, 23, 50));
-	}
-
-	for(let i = 0; i < openSet.length; i++){
-		openSet[i].show(color(142, 183, 200, 75));
-	}
+	for(let i = 0; i < closedSet.length; i++) closedSet[i].show(color(144, 23, 23, 50));
+	for(let i = 0; i < openSet.length; i++) openSet[i].show(color(142, 183, 200, 75));
 
 	path = [];
 	var temp = current;
@@ -140,9 +131,6 @@ function draw(){
 	strokeWeight(w / 2);
 
 	beginShape();
-	for(let i = 0; i < path.length; i++){
-		vertex(path[i].x * w + w / 2, path[i].y * h + h / 2);	
-	}
+	for(let i = 0; i < path.length; i++) vertex(path[i].x * w + w / 2, path[i].y * h + h / 2);
 	endShape();
-
 }
