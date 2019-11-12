@@ -33,7 +33,7 @@ var path = [];
 var found = false;
 
 function setup(){
-	noCanvas();
+	// noCanvas();
 }
 
 function setGrid(col, row){
