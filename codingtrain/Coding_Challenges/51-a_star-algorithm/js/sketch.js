@@ -32,7 +32,9 @@ var path = [];
 
 var found = false;
 
-function setup(){}
+function setup(){
+	noCanvas();
+}
 
 function setGrid(col, row){
 	var ratio;
