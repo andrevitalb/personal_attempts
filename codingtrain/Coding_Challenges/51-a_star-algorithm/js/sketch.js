@@ -54,7 +54,7 @@ function setGrid(col, row){
 		canvasHeight = canvasWidth / ratio;
 	}
 	else {
-		canvasHeight = 600;
+		canvasHeight = 500;
 		canvasWidth = canvasHeight * ratio;
 	}
 
