@@ -3,7 +3,7 @@ var url = "api.openweathermap.org/data/2.5/weather?APPID=7aaf2a637ef23eeacc74321
 
 function setup() {
 	createCanvas(600,600);
-	loadJSON(url gotData);
+	loadJSON(url, gotData);
 }
 
 function gotData(data){
